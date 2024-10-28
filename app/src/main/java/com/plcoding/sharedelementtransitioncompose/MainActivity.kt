@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -61,9 +60,46 @@ class MainActivity : ComponentActivity() {
                                 DetailScreen(
                                     resId = resId,
                                     text = text,
+                                    animatedVisibilityScope = this,
+                                    onItemClick = {text, resId ->
+                                        if(text != null){
+                                            navController.navigate("detailText/$text")
+                                        }else if(resId != null) {
+                                            navController.navigate("detailImage/$resId")
+                                        }
+
+                                    }
+                                )
+                            }
+                            composable(
+                                route = "detailImage/{resId}",
+                                arguments = listOf(
+                                    navArgument("resId"){
+                                        type = NavType.IntType
+                                    }
+                                )
+                            ){
+                                val resId = it.arguments?.getInt("resId") ?: 0
+                                DetailImageScreen(
+                                    resId = resId,
                                     animatedVisibilityScope = this
                                 )
                             }
+                            composable(
+                                route = "detailText/{text}",
+                                arguments = listOf(
+                                    navArgument("text"){
+                                        type = NavType.StringType
+                                    }
+                                )
+                            ){
+                                val text = it.arguments?.getString("text") ?: ""
+                                DetailTextScreen(
+                                    text = text,
+                                    animatedVisibilityScope = this
+                                )
+                            }
+
                         }
                     }
                 }

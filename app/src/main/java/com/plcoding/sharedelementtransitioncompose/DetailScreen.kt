@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 fun SharedTransitionScope.DetailScreen(
     resId: Int,
     text: String,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onItemClick: (String?, Int?) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -46,6 +47,9 @@ fun SharedTransitionScope.DetailScreen(
                         tween(durationMillis = 1000)
                     }
                 )
+                .clickable {
+                    onItemClick(null, resId)
+                }
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -59,6 +63,9 @@ fun SharedTransitionScope.DetailScreen(
                         tween(durationMillis = 1000)
                     }
                 )
+                .clickable {
+                    onItemClick(text, null)
+                }
         )
     }
 }
